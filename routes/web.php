@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\OrderController; 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\DB;
+/* <test> */
 
 Route::get('/test-db', function () {
     try {
