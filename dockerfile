@@ -42,9 +42,11 @@ RUN apt-get update && apt-get install -y \
     unzip \
     zip \
     libzip-dev \
+    libonig-dev \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
+        mbstring \
         zip \
     && a2enmod rewrite
 
