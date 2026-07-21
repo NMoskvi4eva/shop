@@ -76,11 +76,7 @@ class OrderController extends Controller
         'server_url'  => url('/liqpay-webhook'),
     ];
 
-    dd([
-    'url' => url('/liqpay-webhook'),
-    'callback' => url('/payment-callback'),
-    'data' => $liqpayParams,
-]);
+    
         // 5. Кодуємо параметри в Base64 за правилами LiqPay
         $data = base64_encode(json_encode($liqpayParams));
 
