@@ -8,7 +8,7 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght=0,500;0,600;1,400&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="{{ asset('assets/style.css') }}">
+   <link rel="stylesheet" href="{{ asset('assets/style.css') }}">
 </head>
 <body>
 
