@@ -1,22 +1,14 @@
 #!/bin/bash
 
-echo "========== ENV =========="
-printenv | sort
+set -x
 
-echo "========== ARTISAN ABOUT =========="
-php artisan about || true
+echo "Starting..."
 
-echo "========== CONFIG CLEAR =========="
-php artisan config:clear || true
+php artisan config:clear
+php artisan cache:clear
 
-echo "========== CACHE CLEAR =========="
-php artisan cache:clear || true
+php artisan migrate --force
 
-echo "========== MIGRATE =========="
-php artisan migrate --force || true
+php artisan db:seed --force
 
-echo "========== SEED =========="
-php artisan db:seed --force || true
-
-echo "========== START APACHE =========="
 exec apache2-foreground
