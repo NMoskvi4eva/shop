@@ -69,15 +69,18 @@ class OrderController extends Controller
         'action'      => 'pay',
         'amount'      => $order->total_amount,
         'currency'    => 'UAH',
-        'description' => 'Оплата замовлення #' . $order->id . ' в Pâtisserie',
+        'description' => 'Оплата замовлення #' . $order->id,
         'order_id'    => $liqpayOrderId,
-
-        'sandbox'     => 1,
-
-        'result_url' => url('/payment-callback'),
-        'server_url' => url('/liqpay-webhook'),
+        'sandbox'     => '1',
+        'result_url'  => url('/payment-callback'),
+        'server_url'  => url('/liqpay-webhook'),
     ];
 
+    dd([
+    'url' => url('/liqpay-webhook'),
+    'callback' => url('/payment-callback'),
+    'data' => $liqpayParams,
+]);
         // 5. Кодуємо параметри в Base64 за правилами LiqPay
         $data = base64_encode(json_encode($liqpayParams));
 
