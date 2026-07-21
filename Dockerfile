@@ -5,16 +5,15 @@ FROM composer:2 AS composer
 
 WORKDIR /app
 
-COPY composer.json composer.lock ./
+# Копируем весь проект
+COPY . .
+
+# Устанавливаем зависимости
 RUN composer install \
     --no-dev \
     --prefer-dist \
     --optimize-autoloader \
     --no-interaction
-
-COPY . .
-
-RUN composer dump-autoload --optimize
 
 
 # =========================
@@ -52,24 +51,34 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 
+# Копируем проект
 COPY . .
 
+# Копируем vendor
 COPY --from=composer /app/vendor ./vendor
+
+# Копируем Vite build
 COPY --from=node /app/public/build ./public/build
 
-# Laravel directories
-RUN mkdir -p storage/framework/cache \
+# Создаем необходимые каталоги Laravel
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/cache/data \
     storage/framework/sessions \
     storage/framework/views \
     bootstrap/cache
 
+# Права
 RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Символическая ссылка storage
 RUN php artisan storage:link || true
 
 # Apache -> public
 RUN sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf
 
+# Стартовый скрипт
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
 

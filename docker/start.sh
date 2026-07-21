@@ -1,11 +1,13 @@
 #!/bin/bash
+set -e
 
-set -x
-
-echo "Starting..."
+echo "Waiting for database..."
+sleep 10
 
 php artisan config:clear
 php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
 
 php artisan migrate --force
 
