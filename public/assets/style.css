@@ -1,0 +1,445 @@
+  :root {
+            --main-pink: #f7d6d6;
+            --dark-pink: #a37a7a;
+            --accent-coral: #e59a9a;
+            --text-dark: #5c4a4a;
+            --bg-light: #fffbfb;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--bg-light); 
+            color: var(--text-dark);
+            line-height: 1.6;
+            font-size: 1rem; /* 16px */
+        }
+
+        /* Хедер сайту */
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: #fff; 
+            padding: 1rem 5%; 
+            box-shadow: 0 0.125rem 0.9375rem rgba(0,0,0,0.02);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { 
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem; 
+            font-weight: bold; 
+            color: #333; 
+            letter-spacing: 0.0625rem; 
+        }
+        .logo span { color: var(--accent-coral); }
+        
+        .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--text-dark); 
+            font-weight: 500; 
+            font-size: 0.8125rem; 
+            text-transform: uppercase;
+            letter-spacing: 0.0625rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent-coral); }
+        
+        .header-icons { display: flex; gap: 1.25rem; align-items: center; }
+        .icon-btn { background: none; border: none; cursor: pointer; color: var(--text-dark); position: relative; }
+        .cart-badge {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background: var(--accent-coral);
+            color: white;
+            font-size: 0.625rem;
+            padding: 0.125rem 0.375rem;
+            border-radius: 50%;
+        }
+
+        /* Hero секція */
+        .hero { 
+            background-color: #fdf0f0; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3.75rem 8%; 
+            gap: 2.5rem;
+        }
+        .hero-text { flex: 1; max-width: 34.375rem; }
+        .hero-badge {
+            display: inline-block;
+            background: #f5dfdf;
+            color: var(--dark-pink);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            padding: 0.3125rem 0.9375rem;
+            border-radius: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.0625rem;
+            margin-bottom: 1.25rem;
+        }
+        .hero-text h1 { 
+            font-family: 'Playfair Display', serif;
+            /* Адаптивний розмір від 2rem до 2.875rem залежно від ширини екрану */
+            font-size: clamp(2rem, 4.5vw, 2.875rem); 
+            color: var(--text-dark); 
+            margin-bottom: 1.25rem; 
+            line-height: 1.2;
+        }
+        .hero-text h1 span { 
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--accent-coral);
+            font-weight: 400;
+        }
+        .hero-text p { font-size: 0.9375rem; color: #7a6666; margin-bottom: 1.875rem; }
+        .hero-buttons { display: flex; flex-wrap: wrap; gap: 0.9375rem; }
+        
+        .btn {
+            padding: 0.75rem 1.875rem;
+            border-radius: 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.0625rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-primary { background: var(--accent-coral); color: white; border: none; }
+        .btn-primary:hover { background: #d48383; }
+        .btn-outline { background: transparent; color: var(--text-dark); border: 0.0625rem solid var(--text-dark); }
+        .btn-outline:hover { background: var(--text-dark); color: white; }
+
+        /* Колаж картинок в Hero */
+        .hero-images { 
+            flex: 1; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 0.9375rem; 
+            max-width: 31.25rem;
+        }
+        .img-large { 
+            grid-column: span 2; 
+            height: 13.75rem; 
+            border-radius: 0.9375rem; 
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .img-small { 
+            height: 8.75rem; 
+            border-radius: 0.9375rem; 
+            background-size: cover;
+            background-position: center;
+        }
+        .img-label {
+            position: absolute;
+            bottom: 0.9375rem;
+            left: 0.9375rem;
+            background: rgba(255,255,255,0.85);
+            padding: 0.3125rem 0.75rem;
+            border-radius: 0.3125rem;
+            font-size: 0.6875rem;
+            font-weight: 600;
+        }
+
+        /* Секція меню та фільтрів */
+        .menu-section { padding: 3.75rem 5%; text-align: center; }
+        .menu-subtitle { 
+            font-size: 0.6875rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1875rem; 
+            color: var(--accent-coral); 
+            margin-bottom: 0.625rem;
+            font-weight: 600;
+        }
+        .menu-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 2rem; 
+            color: var(--text-dark); 
+            margin-bottom: 1.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.0625rem;
+        }
+        
+        /* Кнопки-фільтри категорій */
+        .filter-container { 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+            gap: 0.625rem; 
+            margin-bottom: 2.5rem; 
+        }
+        .filter-btn {
+            background: #fdf0f0;
+            border: none;
+            color: var(--text-dark);
+            padding: 0.5rem 1.25rem;
+            border-radius: 1.25rem;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.0625rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-coral);
+            color: white;
+        }
+
+        /* Вітрина товарів */
+        .products-grid { 
+            display: grid; 
+            /* Автоматично підлаштовує кількість колонок під ширину екрану */
+            grid-template-columns: repeat(auto-fill, minmax(16.25rem, 1fr)); 
+            gap: 1.875rem; 
+            max-width: 75rem; 
+            margin: 0 auto;
+        }
+        .product-card { 
+            background: #fff; 
+            border-radius: 0.9375rem; 
+            padding: 1.25rem; 
+            text-align: left; 
+            box-shadow: 0 0.3125rem 1.25rem rgba(0,0,0,0.02);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .product-card:hover { transform: translateY(-0.3125rem); }
+        .product-image-placeholder {
+            height: 11.25rem;
+            background-color: #fdf5f5;
+            border-radius: 0.625rem;
+            margin-bottom: 0.9375rem;
+            background-size: cover;
+            background-position: center;
+        }
+        .product-card h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #333; font-weight: 600; }
+        .product-card p { font-size: 0.8125rem; color: #8c7676; margin-bottom: 0.9375rem; min-height: 2.5rem; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .price { color: var(--text-dark); font-weight: 600; font-size: 0.875rem; }
+        .btn-card-buy {
+            background: #fff0f0;
+            color: var(--accent-coral);
+            border: none;
+            padding: 0.375rem 0.9375rem;
+            border-radius: 0.9375rem;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-card-buy:hover { background: var(--accent-coral); color: white; }
+
+        /* Підвал сайту */
+        .footer { background-color: #332929; color: #fff; padding: 2.5rem 5% 1.25rem; margin-top: 3.75rem; }
+        .footer-container { display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 75rem; margin: 0 auto; }
+        .footer-col { flex: 1; min-width: 13.75rem; margin-bottom: 1.25rem; padding: 0 0.625rem; }
+        .footer-col h4 { color: var(--main-pink); text-transform: uppercase; margin-bottom: 0.9375rem; font-size: 0.875rem; letter-spacing: 0.0625rem; }
+        .footer-col p, .footer-col a { color: #d1c3c3; text-decoration: none; font-size: 0.8125rem; line-height: 1.8; display: block; }
+        .footer-col a:hover { color: var(--main-pink); }
+        .footer-bottom { text-align: center; padding-top: 1.25rem; margin-top: 1.25rem; border-top: 0.0625rem solid #4a3e3e; font-size: 0.75rem; color: #9c8e8e; }
+
+        /* 📱 МЕДІАЗАПИТИ ДЛЯ МОБІЛЬНИХ ПРИСТРОЇВ (Екрани до 768px) */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+            .nav-links {
+                display: none; /* Тимчасово приховуємо текстове меню для мобільних (можна буде зробити бургер-меню) */
+            }
+            .hero {
+                flex-direction: column-reverse; /* Картинки будуть над текстом */
+                padding: 2rem 5%;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            .hero-text {
+                max-width: 100%;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-images {
+                width: 100%;
+                max-width: 100%;
+            }
+            .footer-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .footer-col {
+                margin-bottom: 0;
+                padding: 0;
+            }
+        }
+        
+/* 🎨 Стилі для бічної панелі кошика */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0; 
+    transform: translateX(100%); /* Початково сховано праворуч */
+    width: 100%;
+    max-width: 25rem;
+    height: 100vh;
+    background-color: #fff;
+    box-shadow: -0.3125rem 0 1.25rem rgba(0,0,0,0.05);
+    z-index: 1001;
+    transition: transform 0.3s ease; 
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+/* КЛАС ДЛЯ ВІДКРИТТЯ КОШИКА (додається через JS) */
+.cart-sidebar.open {
+    transform: translateX(0); /* Повертаємо кошик на екран */
+}
+
+/* 🕶️ Напівпрозорий фон-затемнення */
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    visibility: hidden; 
+    opacity: 0;
+    transition: visibility 0.3s, opacity 0.3s ease; 
+}
+
+/* КЛАС ДЛЯ ПОКАЗУ ФОНУ (додається через JS) */
+.cart-overlay.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   🧁 ЕЛЕГАНТНЕ КАСТ castom МЕНЮ СОРТУВАННЯ КОНДИТЕРСЬКОЇ
+   ========================================================================== */
+
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    min-width: 250px;
+    z-index: 50;
+}
+
+/* Кнопка-тригер, яка імітує закритий селект */
+.dropdown-trigger {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    background-color: #fff;
+    border: 1px solid var(--border-pink);
+    border-radius: 25px;
+    cursor: pointer;
+    text-align: left;
+    position: relative;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.01);
+}
+
+/* Витончена стрілочка кондитерської */
+.dropdown-trigger::after {
+    content: '▾';
+    font-size: 0.9rem;
+    color: var(--accent-coral);
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+/* Спливаюче меню з опціями сортування (Об'єднане та виправлене) */
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Притискаємо впритул, щоб не було невидимих зазорів */
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid var(--border-pink);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    padding: 0.5rem 0;
+    
+    /* Анімація появи та затримка проти випадкового згортання */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px); 
+    transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+    transition-delay: 0.15s; /* ⏱️ Меню почекає 150мс, якщо мишка випадково зісковзне */
+}
+
+/* Посилання всередині меню */
+.dropdown-menu a {
+    display: block;
+    padding: 0.7rem 1.2rem;
+    color: var(--text-dark);
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* Фірмовий крем та корал при наведенні */
+.dropdown-menu a:hover {
+    background-color: var(--bg-creme) !important;
+    color: var(--accent-coral) !important;
+}
+
+/* Стиль для вже вибраного варіанту */
+.dropdown-menu a.selected {
+    background-color: #fff5f2;
+    color: var(--accent-coral);
+    font-weight: 600;
+}
+
+/* 🌟 ЕФЕКТИ НАВЕДЕННЯ (HOVER) НА КОНТЕЙНЕР */
+
+/* Плавно показуємо меню (без використання конфліктного display: none) */
+.custom-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(5px);
+    transition-delay: 0s; /* З'являється миттєво */
+}
+
+.custom-dropdown:hover .dropdown-trigger {
+    border-color: var(--accent-coral);
+    box-shadow: 0 4px 12px rgba(224, 122, 95, 0.08);
+}
+
+.custom-dropdown:hover .dropdown-trigger::after {
+    transform: translateY(-50%) rotate(180deg); /* Елегантний поворот стрілочки */
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+    .custom-dropdown {
+        width: 100%;
+    }
+}
