@@ -1,29 +1,32 @@
 # =========================
-# Stage 1 — Composer
+# stage 1 — composer
 # =========================
 FROM composer:2 AS composer
 
 WORKDIR /app
 
-# Копируем весь проект
-COPY . .
+COPY composer.json composer.lock ./
 
-# Устанавливаем зависимости
 RUN composer install \
     --no-dev \
     --prefer-dist \
     --optimize-autoloader \
     --no-interaction
 
+COPY . .
+
+RUN composer dump-autoload --optimize
+
 
 # =========================
-# Stage 2 — Node
+# stage 2 — node build
 # =========================
 FROM node:22 AS node
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
+
 RUN npm install
 
 COPY . .
@@ -32,9 +35,10 @@ RUN npm run build
 
 
 # =========================
-# Stage 3 — PHP + Apache
+# stage 3 — php apache
 # =========================
 FROM php:8.3-apache
+
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -47,41 +51,64 @@ RUN apt-get update && apt-get install -y \
         pdo_mysql \
         mbstring \
         zip \
-    && a2enmod rewrite
+    && a2enmod rewrite \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /var/www/html
 
-# Копируем проект
+
+# копируем Laravel проект
 COPY . .
 
-# Копируем vendor
+
+# vendor из composer stage
 COPY --from=composer /app/vendor ./vendor
 
-# Копируем Vite build
+
+# Vite build
 COPY --from=node /app/public/build ./public/build
 
-# Создаем необходимые каталоги Laravel
+
+# Apache должен работать через Laravel public
+RUN sed -i 's!/var/www/html!/var/www/html/public!g' \
+    /etc/apache2/sites-available/000-default.conf
+
+
+# разрешаем Laravel .htaccess
+RUN echo '<Directory /var/www/html/public>' > /etc/apache2/conf-available/laravel.conf \
+    && echo '    AllowOverride All' >> /etc/apache2/conf-available/laravel.conf \
+    && echo '    Require all granted' >> /etc/apache2/conf-available/laravel.conf \
+    && echo '</Directory>' >> /etc/apache2/conf-available/laravel.conf \
+    && a2enconf laravel
+
+
+# создаём папки Laravel
 RUN mkdir -p \
     storage/framework/cache \
-    storage/framework/cache/data \
     storage/framework/sessions \
     storage/framework/views \
     bootstrap/cache
 
-# Права
-RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Символическая ссылка storage
+# права Laravel
+RUN chown -R www-data:www-data \
+    storage \
+    bootstrap/cache
+
+
+# storage link
 RUN php artisan storage:link || true
 
-# Apache -> public
-RUN sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf
 
-# Стартовый скрипт
-COPY docker/start.sh /start.sh
-RUN chmod +x /start.sh
+# кеширование Laravel
+RUN php artisan config:cache || true
+RUN php artisan route:cache || true
+RUN php artisan view:cache || true
+
 
 EXPOSE 80
 
-CMD ["/start.sh"]
+
+CMD ["apache2-foreground"]
