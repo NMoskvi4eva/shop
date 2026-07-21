@@ -62,6 +62,7 @@ RUN mkdir -p storage/framework/cache \
     bootstrap/cache
 
 RUN chown -R www-data:www-data storage bootstrap/cache
+RUN php artisan storage:link || true
 
 # Apache -> public
 RUN sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf

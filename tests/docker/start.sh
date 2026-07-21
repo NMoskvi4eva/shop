@@ -1,14 +1,22 @@
 #!/bin/bash
-set -e
 
-echo "Waiting for database..."
-sleep 10
+echo "========== ENV =========="
+printenv | sort
 
-php artisan config:clear
-php artisan cache:clear
+echo "========== ARTISAN ABOUT =========="
+php artisan about || true
 
-php artisan migrate --force
+echo "========== CONFIG CLEAR =========="
+php artisan config:clear || true
 
-php artisan db:seed --force
+echo "========== CACHE CLEAR =========="
+php artisan cache:clear || true
 
+echo "========== MIGRATE =========="
+php artisan migrate --force || true
+
+echo "========== SEED =========="
+php artisan db:seed --force || true
+
+echo "========== START APACHE =========="
 exec apache2-foreground
