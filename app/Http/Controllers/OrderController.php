@@ -64,16 +64,19 @@ class OrderController extends Controller
 
         // 4. Формуємо масив параметрів платіжної сторінки LiqPay
         $liqpayParams = [
-            'public_key'  => $publicKey,
-            'version'     => '3',
-            'action'      => 'pay',
-            'amount'      => $order->total_amount,
-            'currency'    => 'UAH',
-            'description' => 'Оплата замовлення #' . $order->id . ' в Pâtisserie',
-            'order_id'    => $liqpayOrderId,
-            'sandbox'     => '1', // Включаємо тестовий режим (Sandbox)
-        ];
+        'public_key'  => $publicKey,
+        'version'     => '3',
+        'action'      => 'pay',
+        'amount'      => $order->total_amount,
+        'currency'    => 'UAH',
+        'description' => 'Оплата замовлення #' . $order->id,
+        'order_id'    => $liqpayOrderId,
+        'sandbox'     => '1',
+        'result_url'  => url('/payment-callback'),
+        'server_url'  => url('/liqpay-webhook'),
+    ];
 
+    
         // 5. Кодуємо параметри в Base64 за правилами LiqPay
         $data = base64_encode(json_encode($liqpayParams));
 
@@ -87,9 +90,9 @@ class OrderController extends Controller
     /**
      * Фоновий Webhook від LiqPay (обробка успішного платежу)
      */
-    public function webhook(Request $request)
-    {
-        $privateKey = env('LIQPAY_PRIVATE_KEY');
+   public function webhook(Request $request)
+{
+   $privateKey = env('LIQPAY_PRIVATE_KEY');
         
         $data = $request->input('data');
         $signature = $request->input('signature');
@@ -110,7 +113,7 @@ class OrderController extends Controller
         }
 
         return response('OK', 200);
-    }
+}
 
     /**
      * Сторінка успішного повернення клієнта

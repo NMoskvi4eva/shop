@@ -5,7 +5,17 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController; 
 use App\Http\Controllers\OrderController; 
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\DB;
+/* <test> */
 
+Route::get('/test-db', function () {
+    try {
+        DB::connection()->getPdo();
+        return DB::select("SHOW TABLES");
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
+});
 /*
 |--------------------------------------------------------------------------
 | АВТЕНТИФІКАЦІЯ (Вхід, Реєстрація, Вихід)
@@ -68,3 +78,4 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     // 🎯 ЖУРНАЛ ДІЙ СИСТЕМИ (Аудит)
     Route::get('/logs', [AdminProductController::class, 'logsIndex'])->name('admin.logs.index');
 }); 
+

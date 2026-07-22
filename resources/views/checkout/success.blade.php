@@ -15,5 +15,8 @@
         <br>
         <a href="/">Повернутися на головну</a>
     </div>
+    <script>
+        localStorage.removeItem('patisserie_cart');
+    </script>
 </body>
 </html>

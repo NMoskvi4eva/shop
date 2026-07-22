@@ -179,7 +179,7 @@ class DesertShopTest extends TestCase
 
         $productsInView = $response->viewData('products');
         
-        // Тепер новий торт 100% має свіжішу дату створення і буде першим
+        // Тепер новий торт має свіжішу дату створення і буде першим
         $this->assertEquals($newProduct->id, $productsInView->first()->id);
     }
 }
