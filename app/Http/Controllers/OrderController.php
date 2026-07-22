@@ -90,32 +90,63 @@ class OrderController extends Controller
     /**
      * Фоновий Webhook від LiqPay (обробка успішного платежу)
      */
-    public function webhook(Request $request)
-    {
-        \Log::info('WEBHOOK CALLED', $request->all());
-        
-        $privateKey = env('LIQPAY_PRIVATE_KEY');
-        
-        $data = $request->input('data');
-        $signature = $request->input('signature');
+   public function webhook(Request $request)
+{
+    \Log::info('WEBHOOK START', $request->all());
 
-        $parsedSignature = base64_encode(sha1($privateKey . $data . $privateKey, true));
+    $privateKey = env('LIQPAY_PRIVATE_KEY');
 
-        if ($signature === $parsedSignature) {
-            $response = json_decode(base64_decode($data));
-            $order = Order::where('liqpay_order_id', $response->order_id)->first();
+    $data = $request->input('data');
+    $signature = $request->input('signature');
 
-            if ($order) {
-                if (in_array($response->status, ['success', 'sandbox'])) {
-                    $order->update(['status' => 'Оплачено']); 
-                } else {
-                    $order->update(['status' => 'Скасовано']); 
-                }
+    $parsedSignature = base64_encode(
+        sha1($privateKey . $data . $privateKey, true)
+    );
+
+    \Log::info('SIGNATURE CHECK', [
+        'received' => $signature,
+        'calculated' => $parsedSignature,
+    ]);
+
+    if ($signature === $parsedSignature) {
+
+        $response = json_decode(base64_decode($data));
+
+        \Log::info('LIQPAY RESPONSE', (array)$response);
+
+        $order = Order::where('liqpay_order_id', $response->order_id)->first();
+
+        if ($order) {
+
+            \Log::info('ORDER FOUND', [
+                'id' => $order->id,
+                'status' => $response->status
+            ]);
+
+            if (in_array($response->status, ['success', 'sandbox'])) {
+                $order->update([
+                    'status' => 'Оплачено'
+                ]);
+            } else {
+                $order->update([
+                    'status' => 'Скасовано'
+                ]);
             }
+
+        } else {
+
+            \Log::info('ORDER NOT FOUND', [
+                'liqpay_order_id' => $response->order_id
+            ]);
         }
 
-        return response('OK', 200);
+    } else {
+
+        \Log::info('BAD SIGNATURE');
     }
+
+    return response('OK', 200);
+}
 
     /**
      * Сторінка успішного повернення клієнта
