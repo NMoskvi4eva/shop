@@ -92,43 +92,27 @@ class OrderController extends Controller
      */
    public function webhook(Request $request)
 {
-    try {
-
-        $privateKey = env('LIQPAY_PRIVATE_KEY');
-
+   $privateKey = env('LIQPAY_PRIVATE_KEY');
+        
         $data = $request->input('data');
         $signature = $request->input('signature');
 
-        $parsedSignature = base64_encode(
-            sha1($privateKey . $data . $privateKey, true)
-        );
+        $parsedSignature = base64_encode(sha1($privateKey . $data . $privateKey, true));
 
-        if ($signature !== $parsedSignature) {
-            throw new \Exception('Signature error');
-        }
+        if ($signature === $parsedSignature) {
+            $response = json_decode(base64_decode($data));
+            $order = Order::where('liqpay_order_id', $response->order_id)->first();
 
-        $response = json_decode(base64_decode($data));
-
-        $order = Order::where('liqpay_order_id', $response->order_id)->first();
-
-        if (!$order) {
-            throw new \Exception('Order not found: '.$response->order_id);
-        }
-
-        if (in_array($response->status, ['success', 'sandbox'])) {
-            $order->update(['status' => 'Оплачено']);
-        } else {
-            $order->update(['status' => 'Скасовано']);
+            if ($order) {
+                if (in_array($response->status, ['success', 'sandbox'])) {
+                    $order->update(['status' => 'Оплачено']); 
+                } else {
+                    $order->update(['status' => 'Скасовано']); 
+                }
+            }
         }
 
         return response('OK', 200);
-
-    } catch (\Throwable $e) {
-        \Log::error($e->getMessage());
-        \Log::error($e->getTraceAsString());
-
-        return response($e->getMessage(), 500);
-    }
 }
 
     /**
