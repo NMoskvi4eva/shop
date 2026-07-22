@@ -92,6 +92,8 @@ class OrderController extends Controller
      */
     public function webhook(Request $request)
     {
+        \Log::info('WEBHOOK CALLED', $request->all());
+        
         $privateKey = env('LIQPAY_PRIVATE_KEY');
         
         $data = $request->input('data');
