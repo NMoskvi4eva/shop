@@ -1,58 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🍰 Patisserie — Інтернет-магазин десертів
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Дипломний навчальний проєкт, розроблений в рамках курсової роботи з дисципліни **«Веб-технології та веб-дизайн»**.
 
-## About Laravel
+Проєкт являє собою сучасний інтернет-магазин десертів із можливістю оформлення онлайн-замовлень, інтеграцією платіжної системи LiqPay та адміністративною панеллю керування товарами й замовленнями.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📸 Демонстрація
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Сайт:** https://shop-wrbp.onrender.com
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## ✨ Основні можливості
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 👤 Для покупця
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- перегляд каталогу десертів;
+- сортування товарів;
+- кошик покупця (LocalStorage);
+- зміна кількості товарів;
+- оформлення замовлення;
+- онлайн-оплата через LiqPay;
+- автоматичне повернення після успішної оплати.
 
-## Agentic Development
+### 👨‍💼 Для адміністратора
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- авторизація;
+- керування товарами;
+- додавання товарів;
+- видалення товарів;
+- перегляд усіх замовлень;
+- зміна статусів замовлень;
+- журнал аудиту дій адміністратора.
+
+---
+
+## ⚙️ Використані технології
+
+### Backend
+
+- Laravel 12
+- PHP 8.3
+- Eloquent ORM
+
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
+- Blade Templates
+
+### База даних
+
+- MySQL
+
+### Інтеграції
+
+- LiqPay API
+- Render (Deploy)
+
+---
+
+## 🛒 Реалізований функціонал
+
+### Каталог
+
+- адаптивна сітка товарів;
+- сортування:
+  - за назвою;
+  - за ціною;
+  - стандартний порядок.
+
+### Кошик
+
+- LocalStorage;
+- автоматичний підрахунок суми;
+- зміна кількості;
+- видалення товарів;
+- передача даних на сервер.
+
+### Оплата
+
+- створення замовлення;
+- генерація підпису LiqPay;
+- webhook для підтвердження платежу;
+- автоматична зміна статусу замовлення.
+
+### Адмін-панель
+
+- CRUD товарів;
+- перегляд замовлень;
+- зміна статусів;
+- журнал аудиту.
+
+---
+
+
+## 🚀 Встановлення
 
 ```bash
-composer require laravel/boost --dev
+git clone https://github.com/USERNAME/REPOSITORY.git
 
-php artisan boost:install
+cd REPOSITORY
+
+composer install
+
+npm install
+
+cp .env.example .env
+
+php artisan key:generate
+
+php artisan migrate
+
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 🔑 Налаштування LiqPay
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+У файлі `.env` необхідно вказати:
 
-## Code of Conduct
+```env
+LIQPAY_PUBLIC_KEY=your_public_key
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+LIQPAY_PRIVATE_KEY=your_private_key
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📷 Основні сторінки
 
-## License
+- Головна сторінка
+- Каталог десертів
+- Кошик
+- Оформлення замовлення
+- Сторінка успішної оплати
+- Адмін-панель
+- Журнал аудиту
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 📚 Автор
+
+**Надія Ложкарюк**
+
+Студентка спеціальності **122 — Комп'ютерні науки**
+
+Курсова робота з дисципліни **«Веб-технології та веб-дизайн»**
+
+---
+
+## 📄 Ліцензія
+
+Проєкт створений виключно з навчальною метою.
