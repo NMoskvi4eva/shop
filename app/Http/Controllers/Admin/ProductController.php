@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\Category;
-use App\Models\AuditLog; // 🎯 Імпортуємо модель для логування подій
+use App\Models\AuditLog;
+use Illuminate\Support\Facades\Storage; // 🎯 Імпортуємо фасад для роботи з файлами
 
 class ProductController extends Controller
 {
@@ -16,27 +17,33 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // 🎯 Сортуємо товари так, щоб найновіші (останні додані) були вгорі сторінки
         $products = Product::orderBy('created_at', 'desc')->get(); 
-        
         $categories = Category::all();
         return view('admin.products.index', compact('products', 'categories'));
     }
 
     /**
-     * Створення нового товару (з автоматичним логуванням)
+     * Створення нового товару (з автоматичним логуванням та збереженням картинки)
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // 🎯 ВИПРАВЛЕНО: Змінено 'string' на правила валідації файлу картинки
+        $validatedData = $request->validate([
             'name'        => 'required|string|max:255',
-            'price'       => 'required|numeric',
+            'price'       => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            'image'       => 'nullable|string',
+            'description' => 'required|string',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120', // до 5 МБ
         ]);
 
-        // Створюємо продукт
-        $product = Product::create($request->all());
+        // 🎯 ОБРОБКА ФАЙЛУ: Зберігаємо картинку на диск і отримуємо шлях
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $validatedData['image'] = 'storage/' . $path; // Рядок шляху для БД
+        }
+
+        // Створюємо продукт із завантаженим шляхом до зображення
+        $product = Product::create($validatedData);
 
         // 📝 ЗАПИС У ЖУРНАЛ АУДИТУ
         AuditLog::create([
@@ -45,15 +52,21 @@ class ProductController extends Controller
             'details'    => "Додано новий десерт: {$product->name} (Ціна: {$product->price} грн)"
         ]);
 
-        return redirect()->route('admin.products.index');
+        return redirect()->route('admin.products.index')->with('success', 'Десерт успішно додано!');
     }
 
     /**
-     * Видалення товару (з автоматичним логуванням)
+     * Видалення товару (з очищенням картинки з диска)
      */
     public function destroy(Product $product)
     {
-        // 📝 ЗАПИС У ЖУРНАЛ АУДИТУ (фіксуємо назву перед видаленням)
+        // 🎯 ВИДАЛЕННЯ ФАЙЛУ: Видаляємо фізичну картинку з диска
+        if ($product->image) {
+            $relativePath = str_replace('storage/', '', $product->image);
+            Storage::disk('public')->delete($relativePath);
+        }
+
+        // 📝 ЗАПИС У ЖУРНАЛ АУДИТУ
         AuditLog::create([
             'user_email' => auth()->user()->email ?? 'admin@gmail.com',
             'action'     => 'Видалення товару',
@@ -61,7 +74,7 @@ class ProductController extends Controller
         ]);
 
         $product->delete();
-        return redirect()->route('admin.products.index');
+        return redirect()->route('admin.products.index')->with('success', 'Товар успішно видалено!');
     }
 
     /**
@@ -74,11 +87,10 @@ class ProductController extends Controller
     }
 
     /**
-     * Оновлення статусу замовлення (з валідацією та логуванням)
+     * Оновлення статусу замовлення
      */
     public function updateOrderStatus(Request $request, Order $order)
     {
-        // Валідуємо, щоб статус відповідав лише дозволеним українським значенням
         $request->validate([
             'status' => 'required|string|in:Очікує оплату,Оплачено,Готується,Доставлено,Скасовано'
         ]);
@@ -97,7 +109,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Відображення журналу дій системи (Аудит) в адмінці
+     * Відображення журналу дій системи (Аудит)
      */
     public function logsIndex()
     {
