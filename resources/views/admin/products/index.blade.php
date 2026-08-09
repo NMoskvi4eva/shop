@@ -161,6 +161,16 @@
     </div>
 @endif
 
+@if($errors->any())
+    <div style="background-color: #f8d7da; color: #721c24; padding: 0.75rem 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.85rem;">
+        <ul style="margin: 0; padding-left: 1rem;">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <div class="admin-container">
     
     <div class="form-card">
