@@ -9,6 +9,7 @@
 ## 📸 Демонстрація
 
 **Сайт:** https://shop-wrbp.onrender.com
+**Відео презентація сайту:** https://youtu.be/T_Oo0ef5bg4
 
 ---
 
@@ -100,9 +101,9 @@
 ## 🚀 Встановлення
 
 ```bash
-git clone https://github.com/USERNAME/REPOSITORY.git
+git clone https://github.com/NMoskvi4eva/shop.git
 
-cd REPOSITORY
+cd shop
 
 composer install
 
